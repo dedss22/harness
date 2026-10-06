@@ -1,14 +1,34 @@
 {
-  "name": "nexus-swarm-studio",
-  "version": "2.0.0",
-  "description": "Plataforma e Rede Multi-Agente Autônoma com Kimi CLI e OpenCode Go",
+  "name": "kimi-swarm-harness",
+  "version": "2.1.0",
+  "description": "Autonomous Multi-Agent AI Swarm Harness powered by Kimi Code CLI & OpenCode Go - Elite Web Crafting, Hormozi $100M Marketing, 360° Instagram Modeling & Photorealistic Art Engines",
   "main": "server.js",
-  "scripts": {
-    "start": "node server.js",
-    "studio": "node server.js",
-    "swarm": "node swarm.js"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dedss22/harness.git"
   },
-  "keywords": ["ai", "swarm", "opencode", "kimi", "landing-page", "marketing", "instagram"],
-  "author": "Paralelo 17",
+  "scripts": {
+    "start": "node swarm-cli.js",
+    "studio": "node server.js",
+    "swarm": "node swarm.js",
+    "cli": "node swarm-cli.js"
+  },
+  "keywords": [
+    "ai",
+    "swarm",
+    "multi-agent",
+    "kimi-code",
+    "opencode",
+    "longcat",
+    "deepseek",
+    "tailwind",
+    "bento-grid",
+    "growth-marketing",
+    "alex-hormozi",
+    "instagram-automation",
+    "midjourney",
+    "flux"
+  ],
+  "author": "dedss22",
   "license": "MIT"
 }
