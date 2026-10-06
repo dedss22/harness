@@ -1,0 +1,17 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "opencode-go": {
+      "name": "OpenCode Go (Zen)",
+      "npm": "@ai-sdk/openai",
+      "options": {
+        "baseURL": "https://opencode.ai/zen/go/v1",
+        "apiKey": "SEU_OPENCODE_API_KEY_AQUI",
+        "headers": {
+          "x-opencode-session": "opencode-native-swarm",
+          "User-Agent": "opencode/1.18.34"
+        }
+      }
+    }
+  }
+}

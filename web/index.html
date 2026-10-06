@@ -1,0 +1,268 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maison Lumière — Harmonização Facial & Cirurgia Plástica de Elite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'deep-black': '#0A0A0A',
+                        'midnight': '#0F172A',
+                        'card-dark': '#1E1E1E',
+                        'champagne': '#D4AF37',
+                        'champagne-light': '#E8D48B',
+                        'emerald': '#046A38',
+                        'border-subtle': 'rgba(255,255,255,0.1)',
+                    },
+                    fontFamily: {
+                        'serif': ['Cormorant Garamond', 'serif'],
+                        'sans': ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #0A0A0A; color: #f0f0f0; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
+
+        /* Scroll Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+        .reveal-delay-5 { transition-delay: 0.5s; }
+
+        /* Glassmorphism Header */
+        .glass-header {
+            background: rgba(10, 10, 10, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        /* Bento Card Hover */
+        .bento-card {
+            background: linear-gradient(145deg, rgba(30,30,30,0.9), rgba(20,20,20,0.95));
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+        }
+        .bento-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(212,175,55,0) 0%, rgba(212,175,55,0.3) 50%, rgba(212,175,55,0) 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .bento-card:hover::before { opacity: 1; }
+        .bento-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 60px rgba(212,175,55,0.08), 0 8px 24px rgba(0,0,0,0.4);
+            border-color: rgba(212,175,55,0.2);
+        }
+
+        /* CTA Pulse */
+        @keyframes pulse-gold {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(212,175,55,0.4); }
+            50% { box-shadow: 0 0 0 12px rgba(212,175,55,0); }
+        }
+        .cta-pulse { animation: pulse-gold 2.5s infinite; }
+
+        /* Gold gradient text */
+        .text-gold-gradient {
+            background: linear-gradient(135deg, #D4AF37 0%, #E8D48B 40%, #D4AF37 60%, #B8960C 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Accordion */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), padding 0.3s ease;
+        }
+        .accordion-content.open {
+            max-height: 300px;
+        }
+        .accordion-icon { transition: transform 0.4s ease; }
+        .accordion-icon.rotate { transform: rotate(45deg); }
+
+        /* Decorative line */
+        .gold-line {
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+        }
+
+        /* Hero gradient overlay */
+        .hero-overlay {
+            background: linear-gradient(180deg, 
+                rgba(10,10,10,0.3) 0%, 
+                rgba(10,10,10,0.5) 40%, 
+                rgba(10,10,10,0.85) 75%, 
+                rgba(10,10,10,1) 100%);
+        }
+
+        /* Noise texture overlay */
+        .noise::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        /* Pricing card special */
+        .pricing-featured {
+            border: 1px solid rgba(212,175,55,0.3);
+            background: linear-gradient(145deg, rgba(30,28,20,0.95), rgba(15,15,15,0.98));
+        }
+        .pricing-featured:hover {
+            border-color: rgba(212,175,55,0.5);
+            box-shadow: 0 20px 60px rgba(212,175,55,0.1);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0A0A0A; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
+
+        /* Image treatment */
+        .img-luxury {
+            filter: saturate(0.85) contrast(1.05) brightness(0.9);
+        }
+
+        /* Floating particles */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #D4AF37;
+            border-radius: 50%;
+            animation: float linear infinite;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Floating Particles -->
+    <div id="particles" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"></div>
+
+    <!-- HEADER -->
+    <header class="glass-header fixed top-0 left-0 right-0 z-50 transition-all duration-500" id="mainHeader">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 border border-champagne/40 rounded-full flex items-center justify-center group-hover:border-champagne transition-colors duration-500">
+                        <span class="font-serif text-champagne text-lg font-semibold">M</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-serif text-xl tracking-wider text-white/90">MAISON LUMIÈRE</span>
+                        <span class="text-[9px] tracking-[0.3em] uppercase text-champagne/60">Estética de Elite</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden lg:flex items-center gap-10">
+                    <a href="#metodo" class="text-xs tracking-[0.2em] uppercase text-white/60 hover:text-champagne transition-colors duration-300">O Método</a>
+                    <a href="#especialidades" class="text-xs tracking-[0.2em] uppercase text-white/60 hover:text-champagne transition-colors duration-300">Especialidades</a>
+                    <a href="#corpo-clinico" class="text-xs tracking-[0.2em] uppercase text-white/60 hover:text-champagne transition-colors duration-300">Corpo Clínico</a>
+                    <a href="#investimento" class="text-xs tracking-[0.2em] uppercase text-white/60 hover:text-champagne transition-colors duration-300">Investimento</a>
+                    <a href="#contato" class="text-xs tracking-[0.2em] uppercase text-white/60 hover:text-champagne transition-colors duration-300">Contato</a>
+                </nav>
+
+                <!-- CTA -->
+                <a href="#agendar" class="hidden lg:inline-flex items-center gap-2 px-6 py-2.5 border border-champagne/50 text-champagne text-xs tracking-[0.15em] uppercase hover:bg-champagne hover:text-deep-black transition-all duration-500 cta-pulse">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    Agendar Avaliação VIP
+                </a>
+
+                <!-- Mobile menu button -->
+                <button id="mobileMenuBtn" class="lg:hidden text-white/70 hover:text-champagne transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden lg:hidden bg-deep-black/95 backdrop-blur-xl border-t border-white/5">
+            <div class="px-6 py-8 flex flex-col gap-6">
+                <a href="#metodo" class="text-sm tracking-[0.2em] uppercase text-white/60 hover:text-champagne transition-colors">O Método</a>
+                <a href="#especialidades" class="text-sm tracking-[0.2em] uppercase text-white/60 hover:text-champagne transition-colors">Especialidades</a>
+                <a href="#corpo-clinico" class="text-sm tracking-[0.2em] uppercase text-white/60 hover:text-champagne transition-colors">Corpo Clínico</a>
+                <a href="#investimento" class="text-sm tracking-[0.2em] uppercase text-white/60 hover:text-champagne transition-colors">Investimento</a>
+                <a href="#contato" class="text-sm tracking-[0.2em] uppercase text-white/60 hover:text-champagne transition-colors">Contato</a>
+                <a href="#agendar" class="mt-4 inline-flex items-center justify-center gap-2 px-6 py-3 border border-champagne/50 text-champagne text-xs tracking-[0.15em] uppercase hover:bg-champagne hover:text-deep-black transition-all duration-500">
+                    Agendar Avaliação VIP
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden noise">
+        <!-- Background Image -->
+        <div class="absolute inset-0">
+            <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=1920&q=80&auto=format&fit=crop" 
+                 alt="Clínica de luxo" 
+                 class="w-full h-full object-cover img-luxury opacity-60">
+            <div class="hero-overlay absolute inset-0"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="relative z-10 max-w-5xl mx-auto px-6 text-center pt-32 pb-20">
+            <div class="reveal">
+                <p class="text-champagne/80 text-[11px] tracking-[0.4em] uppercase mb-8 font-light">Cirurgia Plástica & Harmonização Facial</p>
+            </div>
+            
+            <h1 class="reveal reveal-delay-1 font-serif text-5xl md:text-7xl lg:text-8xl font-light leading-[1.1] mb-8">
+                <span class="text-white/95">A Ciência da Beleza,</span><br>
+                <span class="text-gold-gradient italic font-light">A Arte da Discrição.</span>
+            </h1>
+            
+            <div class="reveal reveal-delay-2">
+                <div class="gold-line mx-auto mb-8"></div>
+            </div>
+            
+            <p class="reveal reveal-delay-3 text-white/50 text-base md:text-lg font-extralight leading-relaxed max-w-2xl mx-auto mb-12">
+                Onde a tecnologia 3D encontra a mão de um mestre escultor. 
+                Resultados tão naturais que o mundo verá apenas a sua melhor versão — 
+                <em class="text-white/70">sem jamais descobrir o seu segredo.</em>
+            </p>
+
+            <div class="reveal reveal-delay-4 flex flex-col sm:flex-row items-center justify-center gap-5">
+                <a href="#agendar" class="group px-10 py-4 bg-champagne text-deep-black text-xs tracking-[0.2em] uppercase

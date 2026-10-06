@@ -1,0 +1,14 @@
+{
+  "name": "nexus-swarm-studio",
+  "version": "2.0.0",
+  "description": "Plataforma e Rede Multi-Agente Autônoma com Kimi CLI e OpenCode Go",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "studio": "node server.js",
+    "swarm": "node swarm.js"
+  },
+  "keywords": ["ai", "swarm", "opencode", "kimi", "landing-page", "marketing", "instagram"],
+  "author": "Paralelo 17",
+  "license": "MIT"
+}

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus Growth | A Nova Era da Escala Digital</title>
+  <meta name="description" content="A infraestrutura definitiva para quem busca dominar a presença digital, atrair clientes de alto valor e converter com precisão cirúrgica.">
+  
+  <!-- Fontes Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN com Suporte a Classes Customizadas -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f5f3ff',
+              100: '#ede9fe',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              700: '#6d28d9',
+              900: '#4c1d95',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    /* Suavização de renderização de fontes */
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #09090b;
+      color: #fafafa;
+      overflow-x: hidden;
+    }
+    .glow-bg {
+      background: radial-gradient(circle at 50% 0%, rgba(124, 58, 237, 0.25) 0%, rgba(9, 9, 11, 0) 70%);
+    }
+    .glass-card {
+      background: rgba(18, 18, 24, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card:hover {
+      border-color: rgba(139, 92, 246, 0.35);
+    }
+  </style>
+</head>
+<body class="selection:bg-brand-500 selection:text-white">
+
+  <!-- ==================== BACKGROUND GLOW ==================== -->
+  <div class="fixed inset-0 glow-bg pointer-events-none z-0"></div>
+  <div class="fixed top-1/4 -right-48 w-96 h-96 bg-fuchsia-600/10 blur-[140px] rounded-full pointer-events-none"></div>
+  <div class="fixed bottom-1/4 -left-48 w-96 h-96 bg-brand-600/10 blur-[140px] rounded-full pointer-events-none"></div>
+
+  <!-- ==================== HEADER FLUTUANTE ==================== -->
+  <header class="fixed top-6 left-0 right-0 z-50 px-4">
+    <div class="max-w-5xl mx-auto backdrop-blur-xl bg-black/60 border border-white/10 rounded-full px-6 py-3.5 flex items-center justify-between shadow-2xl shadow-black/80">
+      <a href="#" class="flex items-center gap-2.5 group">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-brand-500/25 group-hover:scale-105 transition-transform">
+          <i class="fa-solid fa-bolt-lightning text-sm"></i>
+        </div>
+        <span class="font-extrabold text-lg tracking-tight text-white">NEXUS<span class="text-brand-500">.</span></span>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400">
+        <a href="#solucao" class="hover:text-white transition-colors">Solução</a>
+        <a href="#diferenciais" class="hover:text-white transition-colors">Diferenciais</a>
+        <a href="#depoimentos" class="hover:text-white transition-colors">Casos de Sucesso</a>
+        <a href="#faq" class="hover:text-white transition-colors">Dúvidas</a>
+      </nav>
+
+      <a href="#oferta" class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white text-zinc-950 font-bold text-xs uppercase tracking-wider hover:bg-zinc-200 transition-all hover:scale-105 active:scale-95 shadow-md">
+        Começar Agora <i class="fa-solid fa-arrow-right text-[10px]"></i>
+      </a>
+    </div>
+  </header>
+
+  <!-- ==================== HERO SECTION ==================== -->
+  <section class="relative pt-44 pb-24 md:pt-52 md:pb-32 px-4 z-10 max-w-6xl mx-auto text-center">
+    <!-- Status Pill -->
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-500/30 bg-brand-500/10 text-brand-300 text-xs font-semibold mb-8 animate-pulse">
+      <span class="w-2 h-2 rounded-full bg-brand-400"></span>
+      Framework 2026 de Conversão e Autoridade 360°
+    </div>
+
+    <!-- Main Headline -->
+    <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-[1.1] mb-6">
+      Transforme Atenção em <span class="bg-clip-text text-transparent bg-gradient-to-r from-brand-400 via-indigo-300 to-fuchsia-400">Faturamento Real</span> Sem Desperdício.
+    </h1>
+
+    <!-- Subheadline -->
+    <p class="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-10 font-normal leading-relaxed">
+      A infraestrutura de marketing, design de conversão e presença no Instagram que posiciona a sua marca como a escolha óbvia do seu mercado.
+    </p>
+
+    <!-- CTAs Duplos -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+      <a href="#oferta" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-brand-600 to-indigo-600 text-white font-bold text-base hover:shadow-xl hover:shadow-brand-500/30 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-3">
+        Desbloquear Acesso Imediato
+        <i class="fa-solid fa-arrow-right"></i>
+      </a>
+      <a href="#diferenciais" class="w-full sm:w-auto px-8 py-4 rounded-xl border border-white/10 bg-zinc-900/60 text-zinc-300 hover:text-white font-semibold text-base hover:bg-zinc-800/60 transition-all flex items-center justify-center gap-2">
+        <i class="fa-regular fa-circle-play text-brand-400"></i> Ver Demonstração
+      </a>
+    </div>
+
+    <!-- Prova Social no Hero -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 text-xs text-zinc-400">
+      <div class="flex -space-x-2">
+        <img class="inline-block h-8 w-8 rounded-full ring-2 ring-zinc-900 object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Avatar">
+        <img class="inline-block h-8 w-8 rounded-full ring-2 ring-zinc-900 object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80" alt="Avatar">
+        <img class="inline-block h-8 w-8 rounded-full ring-2 ring-zinc-900 object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80" alt="Avatar">
+        <img class="inline-block h-8 w-8 rounded-full ring-2 ring-zinc-900 object-cover" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80" alt="Avatar">
+      </div>
+      <div class="flex items-center gap-1.5">
+        <div class="text-amber-400 flex gap-0.5">
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+        </div>
+        <span class="font-bold text-zinc-200">4.9/5</span> por mais de 1.480 marcas aceleradas.
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== BARRA DE MÉTRICAS ==================== -->
+  <section class="border-y border-white/5 bg-zinc-950/80 py-12 px-4 z-10 relative">
+    <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <div>
+        <p class="text-3xl md:text-4xl font-extrabold text-white mb-1">+R$ 28M</p>
+        <p class="text-xs md:text-sm text-zinc-500 font-medium uppercase tracking-wider">Gerados em Vendas</p>
+      </div>
+      <div>
+        <p class="text-3xl md:text-4xl font-extrabold text-brand-400 mb-1">3.4x</p>
+        <p class="text-xs md:text-sm text-zinc-500 font-medium uppercase tracking-wider">Aumento Médio em Conversão</p>
+      </div>
+      <div>
+        <p class="text-3xl md:text-4xl font-extrabold text-white mb-1">100/100</p>
+        <p class="text-xs md:text-sm text-zinc-500 font-medium uppercase tracking-wider">Performance Lighthouse</p>
+      </div>
+      <div>
+        <p class="text-3xl md:text-4xl font-extrabold text-fuchsia-400 mb-1">24 Horas</p>
+        <p class="text-xs md:text-sm text-zinc-500 font-medium uppercase tracking-wider">Para Setup Completo</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== BENTO GRID DE DIFERENCIAIS ==================== -->
+  <section id="diferenciais" class="py-28 px-4 max-w-6xl mx-auto z-10 relative">
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <h2 class="text-xs font-bold uppercase tracking-widest text-brand-400 mb-3">Engenharia de Ponta a Ponta</h2>
+      <p class="text-3xl md:text-5xl font-extrabold text-white tracking-tight">Construído para quem não aceita passar despercebido.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Card Grande (Col Span 2) -->
+      <div class="glass-card md:col-span-2 rounded-3xl p-8 md:p-10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden group">
+        <div class="w-12 h-12 rounded-2xl bg-brand-500/20 text-brand-400 flex items-center justify-center text-xl mb-6 border border-brand-500/30">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-white mb-3">Landing Pages de Conversão Cirúrgica</h3>
+        <p class="text-zinc-400 leading-relaxed text-sm md:text-base max-w-lg mb-6">
+          Layouts concebidos com psicologia cognitiva, Bento Grid, micro-interações táteis e código puro ultraleve. O seu visitante é conduzido pelo funil sem pontos de distração ou atrito.
+        </p>
+        <div class="rounded-xl border border-white/10 bg-black/50 p-4 font-mono text-xs text-zinc-400 overflow-x-auto">
+          <span class="text-emerald-400">✓ Lighthouse Score:</span> 100/100 Mobile & Desktop | Tempo de carregamento &lt; 0.4s
+        </div>
+      </div>
+
+      <!-- Card Vertical 1 -->
+      <div class="glass-card rounded-3xl p-8 transition-all duration-300 hover:-translate-y-1 group">
+        <div class="w-12 h-12 rounded-2xl bg-fuchsia-500/20 text-fuchsia-400 flex items-center justify-center text-xl mb-6 border border-fuchsia-500/30">
+          <i class="fa-brands fa-instagram"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-white mb-3">Modelagem 360° de Instagram</h3>
+        <p class="text-zinc-400 leading-relaxed text-sm">
+          Bio magnética em 4 linhas, 5 destaques de retenção, esteira de carrosséis de 10 lâminas e sequências de stories com gatilhos de fechamento por DM.
+        </p>
+      </div>
+
+      <!-- Card Vertical 2 -->
+      <div class="glass-card rounded-3xl p-8 transition-all duration-300 hover:-translate-y-1 group">
+        <div class="w-12 h-12 rounded-2xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl mb-6 border border-blue-500/30">
+          <i class="fa-solid fa-chart-line"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-white mb-3">Ofertas Grand Slam ($100M)</h3>
+        <p class="text-zinc-400 leading-relaxed text-sm">
+          Engenharia de valor absoluto: maximização da transformação dos sonhos, garantia reversa de risco zero e quebra prévia de todas as objeções do cliente.
+        </p>
+      </div>
+
+      <!-- Card Grande (Col Span 2) -->
+      <div class="glass-card md:col-span-2 rounded-3xl p-8 md:p-10 transition-all duration-300 hover:-translate-y-1 group">
+        <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl mb-6 border border-amber-500/30">
+          <i class="fa-solid fa-camera-retro"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-white mb-3">Fabricação de Imagens e Direção de Arte com IA</h3>
+        <p class="text-zinc-400 leading-relaxed text-sm md:text-base max-w-lg">
+          Prompts cinematográficos para Midjourney e Flux com precisão milimétrica de lente, iluminação de estúdio Hasselblad e consistência de marca editorial.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TABELA DE OFERTA / PRICING ==================== -->
+  <section id="oferta" class="py-24 px-4 max-w-4xl mx-auto z-10 relative">
+    <div class="glass-card rounded-3xl p-8 md:p-14 border border-brand-500/40 relative overflow-hidden shadow-2xl shadow-brand-500/10">
+      <div class="absolute top-0 right-0 bg-brand-600 text-white font-extrabold text-[11px] uppercase tracking-widest px-6 py-2 rounded-bl-2xl">
+        Acesso Imediato
+      </div>
+
+      <div class="text-center max-w-xl mx-auto mb-10">
+        <h3 class="text-3xl md:text-4xl font-extrabold text-white mb-3">O Sistema Completo de Dominação</h3>
+        <p class="text-zinc-400 text-sm">Tudo o que você precisa para implementar a infraestrutura dos 1% mais bem-sucedidos.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-10">
+        <div class="space-y-4 text-sm text-zinc-300">
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-check text-brand-400"></i>
+            <span>Arquitetura de Landing Page Pronta para Produção</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-check text-brand-400"></i>
+            <span>Dossiê Completo de Modelagem de Instagram (Bio, Destaques, Feeds)</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-check text-brand-400"></i>
+            <span>Roteiro de 10 Lâminas de Carrossel Infinito + Scripts de Reels</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-check text-brand-400"></i>
+            <span>Motor de Prompts Fotorealistas para Midjourney & Flux</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-check text-brand-400"></i>
+            <span>Garantia Incondicional de 100% de Satisfação</span>
+          </div>
+        </div>
+
+        <div class="bg-black/60 rounded-2xl p-6 border border-white/10 text-center">
+          <p class="text-xs uppercase font-bold text-zinc-400 mb-2">Investimento Único</p>
+          <div class="flex items-center justify-center gap-1 mb-2">
+            <span class="text-zinc-500 text-lg line-through mr-2">R$ 1.997</span>
+            <span class="text-4xl md:text-5xl font-black text-white">R$ 497</span>
+          </div>
+          <p class="text-xs text-brand-400 font-medium mb-6">ou 12x de R$ 49,90 no cartão</p>
+          <a href="#" class="w-full py-4 rounded-xl bg-brand-600 text-white font-bold text-sm block hover:bg-brand-500 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-brand-600/30">
+            Quero Implementar Agora
+          </a>
+        </div>
+      </div>
+
+      <p class="text-center text-xs text-zinc-500">
+        <i class="fa-solid fa-shield-halved text-brand-400 mr-1"></i> Garantia de 7 dias com risco zero. Se não amar, receba 100% do seu dinheiro de volta.
+      </p>
+    </div>
+  </section>
+
+  <!-- ==================== FAQ EM ACCORDION ==================== -->
+  <section id="faq" class="py-20 px-4 max-w-3xl mx-auto z-10 relative">
+    <div class="text-center mb-12">
+      <h2 class="text-xs font-bold uppercase tracking-widest text-brand-400 mb-2">Perguntas Frequentes</h2>
+      <p class="text-3xl font-extrabold text-white">Tire suas principais dúvidas</p>
+    </div>
+
+    <div class="space-y-4" id="faq-container">
+      <div class="glass-card rounded-2xl p-5 cursor-pointer faq-item">
+        <div class="flex items-center justify-between font-semibold text-white">
+          <span>Como o enxame de agentes funciona na prática?</span>
+          <i class="fa-solid fa-chevron-down text-xs text-zinc-400 transition-transform duration-300"></i>
+        </div>
+        <p class="text-zinc-400 text-sm mt-3 hidden faq-answer leading-relaxed">
+          O enxame é orquestrado pelo Maestro central (Kimi K3) que delega cada tarefa aos melhores modelos do OpenCode Go: DeepSeek V4 Pro constrói os códigos, GLM desenvolve as copys persuasivas e os modelos de visão projetam as artes visuais.
+        </p>
+      </div>
+
+      <div class="glass-card rounded-2xl p-5 cursor-pointer faq-item">
+        <div class="flex items-center justify-between font-semibold text-white">
+          <span>Preciso saber programar para utilizar?</span>
+          <i class="fa-solid fa-chevron-down text-xs text-zinc-400 transition-transform duration-300"></i>
+        </div>
+        <p class="text-zinc-400 text-sm mt-3 hidden faq-answer leading-relaxed">
+          Não. O harness entrega os arquivos totalmente prontos, organizados e validados, bastando abrir no navegador ou colar os conteúdos diretamente nas suas redes sociais.
+        </p>
+      </div>
+
+      <div class="glass-card rounded-2xl p-5 cursor-pointer faq-item">
+        <div class="flex items-center justify-between font-semibold text-white">
+          <span>Como configuro as minhas chaves do OpenCode Go?</span>
+          <i class="fa-solid fa-chevron-down text-xs text-zinc-400 transition-transform duration-300"></i>
+        </div>
+        <p class="text-zinc-400 text-sm mt-3 hidden faq-answer leading-relaxed">
+          Basta definir a variável de ambiente OPENCODE_API_KEY com sua chave no arquivo .env ou rodar o script automatizado setup-harness.ps1. O Kimi Code CLI fará a autenticação instantânea com os modelos.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="border-t border-white/5 py-12 px-4 z-10 relative bg-black/90">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-zinc-500">
+      <div class="flex items-center gap-2 font-bold text-white">
+        <i class="fa-solid fa-bolt-lightning text-brand-500"></i> NEXUS ENXAME HARNESS © 2026
+      </div>
+      <div class="flex gap-6">
+        <a href="#" class="hover:text-zinc-300">Termos de Uso</a>
+        <a href="#" class="hover:text-zinc-300">Políticas de Privacidade</a>
+        <a href="#" class="hover:text-zinc-300">Suporte</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script Interativo do FAQ -->
+  <script>
+    document.querySelectorAll('.faq-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const answer = item.querySelector('.faq-answer');
+        const icon = item.querySelector('.fa-chevron-down');
+        const isOpen = !answer.classList.contains('hidden');
+        
+        document.querySelectorAll('.faq-answer').forEach(a => a.classList.add('hidden'));
+        document.querySelectorAll('.fa-chevron-down').forEach(i => i.classList.remove('rotate-180'));
+        
+        if (!isOpen) {
+          answer.classList.remove('hidden');
+          icon.classList.add('rotate-180');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

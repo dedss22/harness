@@ -1,0 +1,33 @@
+# ==============================================================================
+# GITIGNORE - ENXAME KIMI + OPENCODE GO
+# ==============================================================================
+
+# Credenciais e Chaves de API (NUNCA SUBIR PARA O GITHUB)
+.env
+config.toml
+opencode.json
+
+# Binários locais do Kimi CLI
+bin/
+*.exe
+
+# Sessões, Cache e Histórico de Usuário
+cache/
+sessions/
+user-history/
+telemetry/
+workspace-trust/
+updates/
+device_id
+session_index.jsonl
+workspaces.json
+*.log
+
+# Dependências
+node_modules/
+
+# Backups e arquivos temporários
+backups/
+*.tmp
+.DS_Store
+Thumbs.db
