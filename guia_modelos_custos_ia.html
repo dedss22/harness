@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Dossiê de Modelos & Custos de Tokens: OpenCode Go vs. Google Antigravity</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 10mm 12mm 10mm 12mm;
+    }
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #1e293b;
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+      font-size: 9.5pt;
+      line-height: 1.35;
+    }
+    .header {
+      border-bottom: 2px solid #4f46e5;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 16pt;
+      color: #0f172a;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .header .subtitle {
+      margin-top: 2px;
+      font-size: 9pt;
+      color: #64748b;
+      font-weight: 500;
+    }
+    .header .badge {
+      background: #eef2ff;
+      color: #4338ca;
+      padding: 3px 8px;
+      border-radius: 5px;
+      font-size: 8pt;
+      font-weight: 700;
+      border: 1px solid #c7d2fe;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    h2 {
+      font-size: 11pt;
+      color: #0f172a;
+      margin-top: 10px;
+      margin-bottom: 4px;
+      padding-left: 7px;
+      border-left: 3.5px solid #4f46e5;
+      font-weight: 700;
+      break-after: avoid;
+    }
+    .section-desc {
+      font-size: 8.5pt;
+      color: #475569;
+      margin-bottom: 6px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 10px;
+      font-size: 8.5pt;
+      break-inside: avoid;
+    }
+    th {
+      background-color: #f1f5f9;
+      color: #334155;
+      font-weight: 700;
+      text-align: left;
+      padding: 5px 8px;
+      border: 1px solid #cbd5e1;
+      font-size: 8pt;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    td {
+      padding: 4.5px 8px;
+      border: 1px solid #e2e8f0;
+      vertical-align: middle;
+    }
+    tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+    .tag {
+      display: inline-block;
+      padding: 1.5px 6px;
+      border-radius: 4px;
+      font-size: 7.5pt;
+      font-weight: 700;
+    }
+    .tag-free {
+      background-color: #dcfce7;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+    .tag-flash {
+      background-color: #e0e7ff;
+      color: #4338ca;
+      border: 1px solid #c7d2fe;
+    }
+    .tag-pro {
+      background-color: #fef3c7;
+      color: #b45309;
+      border: 1px solid #fde68a;
+    }
+    .tag-vision {
+      background-color: #f3e8ff;
+      color: #7e22ce;
+      border: 1px solid #e9d5ff;
+    }
+    .tag-gemini {
+      background-color: #e0f2fe;
+      color: #0369a1;
+      border: 1px solid #bae6fd;
+    }
+    .price {
+      font-weight: 700;
+      color: #0f172a;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 8.5pt;
+    }
+    .callout {
+      background-color: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-left: 3.5px solid #16a34a;
+      padding: 7px 11px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      font-size: 8.5pt;
+      color: #166534;
+      break-inside: avoid;
+    }
+    .callout strong {
+      color: #14532d;
+    }
+    .page-break {
+      page-break-before: always;
+      break-before: page;
+    }
+    .footer-note {
+      margin-top: 14px;
+      padding-top: 6px;
+      border-top: 1px solid #e2e8f0;
+      font-size: 8pt;
+      color: #94a3b8;
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PÁGINA 1: ECOSSISTEMA OPENCODE GO -->
+  <div class="header">
+    <div>
+      <h1>Dossiê de Modelos & Custos de Tokens</h1>
+      <div class="subtitle">Análise Comparativa: OpenCode Go vs. Google Antigravity Ecosystem</div>
+    </div>
+    <div>
+      <span class="badge">NEXUS SWARM HARNESS</span>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>💡 Dica Estratégica de Otimização:</strong> O ecossistema foi configurado para utilizar o <strong>LongCat ($0.00)</strong> como Maestro Central e os modelos <strong>Flash ($0.15/1M)</strong> para as tarefas operacionais. Com o cabeçalho <code>x-opencode-session = "swarm-persistent-cache"</code> ativo, as chamadas recorrentes recebem <strong>98% de desconto</strong> no prompt cache ($0.003/1M), garantindo que a cota dure o mês inteiro com chamadas contínuas.
+  </div>
+
+  <!-- SEÇÃO 1: OPENCODE GO GRATUITO -->
+  <h2>1. OpenCode Go: Núcleo Gratuito & Ilimitado</h2>
+  <div class="section-desc">Modelos sem cobrança de tokens e sem consumo do teto mensal da assinatura Go:</div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">Modelo</th>
+        <th style="width: 14%;">Entrada / 1M</th>
+        <th style="width: 14%;">Saída / 1M</th>
+        <th style="width: 15%;">Contexto</th>
+        <th style="width: 32%;">Capacidades & Destaques</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>longcat-2.5-preview-free</strong> <span class="tag tag-free">Zero Custo</span></td>
+        <td class="price">$0.00</td>
+        <td class="price">$0.00</td>
+        <td>128.000 (128k)</td>
+        <td><strong>Thinking Tokens Nativos</strong>, Tool Use. Raciocínio profundo ideal para o Maestro Central. Cota ILIMITADA.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SEÇÃO 2: OPENCODE GO FLASH -->
+  <h2>2. OpenCode Go: Núcleo Flash de Alta Eficiência</h2>
+  <div class="section-desc">Modelos de frações de centavo recomendados para as missões diárias em paralelo do Enxame:</div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 22%;">Modelo</th>
+        <th style="width: 13%;">Entrada / 1M</th>
+        <th style="width: 13%;">Saída / 1M</th>
+        <th style="width: 14%;">Prompt Cache</th>
+        <th style="width: 11%;">Contexto</th>
+        <th style="width: 13%;">Cota Go</th>
+        <th style="width: 14%;">Papel no Enxame</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>deepseek-v4-flash</strong> <span class="tag tag-flash">Flash</span></td>
+        <td class="price">$0.15</td>
+        <td class="price">$0.60</td>
+        <td class="price" style="color: #16a34a;">$0.003</td>
+        <td>128k</td>
+        <td>$120 / mês</td>
+        <td>@web-architect</td>
+      </tr>
+      <tr>
+        <td><strong>deepseek-v4.1-flash</strong> <span class="tag tag-flash">Flash</span></td>
+        <td class="price">$0.15</td>
+        <td class="price">$0.60</td>
+        <td class="price" style="color: #16a34a;">$0.003</td>
+        <td>128k</td>
+        <td>$120 / mês</td>
+        <td>Programação/Lógica</td>
+      </tr>
+      <tr>
+        <td><strong>glm-5.3-flash</strong> <span class="tag tag-flash">Flash</span></td>
+        <td class="price">$0.15</td>
+        <td class="price">$0.50</td>
+        <td class="price" style="color: #16a34a;">$0.003</td>
+        <td>64k</td>
+        <td>$180 / mês</td>
+        <td>@marketing-strategist</td>
+      </tr>
+      <tr>
+        <td><strong>qwen3.8-flash</strong> <span class="tag tag-flash">Flash</span></td>
+        <td class="price">$0.15</td>
+        <td class="price">$0.47</td>
+        <td class="price" style="color: #16a34a;">$0.003</td>
+        <td>128k</td>
+        <td>$90 / mês</td>
+        <td>@prompt-artisan</td>
+      </tr>
+      <tr>
+        <td><strong>minimax-m3</strong> <span class="tag tag-flash">Flash</span></td>
+        <td class="price">$0.30</td>
+        <td class="price">$1.20</td>
+        <td class="price" style="color: #16a34a;">$0.006</td>
+        <td>128k</td>
+        <td>$180 / mês</td>
+        <td>@instagram-architect</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SEÇÃO 3: OPENCODE GO PRO & VISION -->
+  <h2>3. OpenCode Go: Modelos Pro & Multimodais (Visão)</h2>
+  <div class="section-desc">Modelos robustos para tarefas pontuais de alta complexidade ou leitura de imagens:</div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 22%;">Modelo</th>
+        <th style="width: 13%;">Entrada / 1M</th>
+        <th style="width: 13%;">Saída / 1M</th>
+        <th style="width: 12%;">Contexto</th>
+        <th style="width: 16%;">Suporta Imagem?</th>
+        <th style="width: 12%;">Cota Go</th>
+        <th style="width: 12%;">Janela 5h</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>kimi-k3</strong> <span class="tag tag-vision">Vision</span></td>
+        <td class="price">$3.00</td>
+        <td class="price">$15.00</td>
+        <td><strong>200.000</strong></td>
+        <td><strong style="color: #7e22ce;">SIM (Vision 👁️)</strong></td>
+        <td>$60 / mês</td>
+        <td>~$12 / 5h</td>
+      </tr>
+      <tr>
+        <td><strong>kimi-k2.7-code</strong> <span class="tag tag-vision">Vision</span></td>
+        <td class="price">$1.00</td>
+        <td class="price">$4.00</td>
+        <td>128.000</td>
+        <td><strong style="color: #7e22ce;">SIM (Vision 👁️)</strong></td>
+        <td>$90 / mês</td>
+        <td>~$18 / 5h</td>
+      </tr>
+      <tr>
+        <td><strong>deepseek-v4-pro</strong> <span class="tag tag-pro">Pro</span></td>
+        <td class="price">$0.27</td>
+        <td class="price">$1.10</td>
+        <td>128.000</td>
+        <td>Não</td>
+        <td>$120 / mês</td>
+        <td>~$24 / 5h</td>
+      </tr>
+      <tr>
+        <td><strong>glm-5.3</strong> <span class="tag tag-pro">Pro</span></td>
+        <td class="price">$1.00</td>
+        <td class="price">$3.00</td>
+        <td>128.000</td>
+        <td>Não</td>
+        <td>$120 / mês</td>
+        <td>~$24 / 5h</td>
+      </tr>
+      <tr>
+        <td><strong>qwen3.8-max</strong> <span class="tag tag-pro">Pro</span></td>
+        <td class="price">$1.60</td>
+        <td class="price">$6.40</td>
+        <td>128.000</td>
+        <td>Não</td>
+        <td>$90 / mês</td>
+        <td>~$18 / 5h</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- QUEBRA PARA A PÁGINA 2 -->
+  <div class="page-break"></div>
+
+  <!-- PÁGINA 2: ANTIGRAVITY, DECISÃO E CACHE -->
+  <div class="header">
+    <div>
+      <h1>Dossiê de Modelos & Custos de Tokens</h1>
+      <div class="subtitle">Parte 2: Google Antigravity & Diretrizes Estratégicas de Uso</div>
+    </div>
+    <div>
+      <span class="badge">NEXUS SWARM HARNESS</span>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 4: GOOGLE ANTIGRAVITY -->
+  <h2>4. Google Antigravity: Ecossistema Gemini (Google AI / Vertex AI)</h2>
+  <div class="section-desc">Plataforma agêntica oficial da Google DeepMind. O uso no app desktop é <strong>incluso na conta Google conectada</strong>, com as seguintes taxas da API:</div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 23%;">Modelo</th>
+        <th style="width: 14%;">Entrada / 1M</th>
+        <th style="width: 14%;">Saída / 1M</th>
+        <th style="width: 16%;">Janela Contexto</th>
+        <th style="width: 14%;">Prompt Cache</th>
+        <th style="width: 19%;">Especialidade Agêntica</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Gemini 2.5 Flash Lite</strong> <span class="tag tag-gemini">Lite</span></td>
+        <td class="price">$0.0375</td>
+        <td class="price">$0.15</td>
+        <td>1.000.000 (1M)</td>
+        <td class="price">$0.009</td>
+        <td>Latência ultrabaixa, micro-tarefas e loops rápidos.</td>
+      </tr>
+      <tr>
+        <td><strong>Gemini 2.5 Flash</strong> <span class="tag tag-gemini">Flash</span></td>
+        <td class="price">$0.0750</td>
+        <td class="price">$0.30</td>
+        <td>1.000.000 (1M)</td>
+        <td class="price">$0.018</td>
+        <td>Equilíbrio perfeito: 1M tokens, multimodal nativo.</td>
+      </tr>
+      <tr>
+        <td><strong>Gemini 2.5 Pro</strong> <span class="tag tag-gemini">Pro</span></td>
+        <td class="price">$1.2500</td>
+        <td class="price">$5.00</td>
+        <td><strong>2.000.000 (2M)</strong></td>
+        <td class="price">$0.312</td>
+        <td>Raciocínio profundo, arquiteturas e refatorações complexas.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SEÇÃO 5: MATRIZ DE DECISÃO -->
+  <h2>5. Matriz de Decisão: Qual Ambiente Utilizar?</h2>
+  <div class="section-desc">Guia rápido para escolher a ferramenta certa e maximizar a produtividade sem desperdício:</div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 30%;">Necessidade / Caso de Uso</th>
+        <th style="width: 22%;">Ambiente Recomendado</th>
+        <th style="width: 26%;">Modelo Indicado</th>
+        <th style="width: 22%;">Custo Estimado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Executar Missão do Enxame (Web + Mkt + Social + Prompts)</strong></td>
+        <td>Terminal <code>swarm.bat</code> ou PowerShell</td>
+        <td>Maestro LongCat + Flash Specialists</td>
+        <td><span class="tag tag-free">~$0.005 / rodada</span></td>
+      </tr>
+      <tr>
+        <td><strong>Análise de Imagens / Prints no Terminal</strong></td>
+        <td>Kimi Code CLI (<code>kimi</code>)</td>
+        <td><code>/model kimi-k3</code> ou <code>kimi-k2.7-code</code></td>
+        <td>Consome cota Go ($1.00-$3.00/1M)</td>
+      </tr>
+      <tr>
+        <td><strong>Desenvolvimento de Código Complexo / Pair Programming</strong></td>
+        <td>Antigravity Desktop / IDE</td>
+        <td>Gemini 2.5 Pro / Flash</td>
+        <td>Incluso na conta Google</td>
+      </tr>
+      <tr>
+        <td><strong>Automações de Longa Duração & Scripts em Background</strong></td>
+        <td>Terminal / <code>server.js</code></td>
+        <td><code>longcat-2.5-preview-free</code></td>
+        <td><span class="tag tag-free">$0.00 (Ilimitado)</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SEÇÃO 6: MATEMÁTICA DO PROMPT CACHE -->
+  <h2>6. Matemática do Prompt Caching (98% de Desconto)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 28%;">Cenário Operacional</th>
+        <th style="width: 24%;">Tokens Processados</th>
+        <th style="width: 24%;">Custo Sem Cache</th>
+        <th style="width: 24%;">Custo Com Cache Ativo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1 Chamada com System Prompt</strong></td>
+        <td>35.000 tokens de entrada</td>
+        <td class="price">$0.00525</td>
+        <td class="price" style="color: #16a34a;">$0.000105</td>
+      </tr>
+      <tr>
+        <td><strong>100 Chamadas do Enxame</strong></td>
+        <td>3.500.000 tokens de entrada</td>
+        <td class="price">$0.52500</td>
+        <td class="price" style="color: #16a34a;">$0.01050 (1 centavo!)</td>
+      </tr>
+      <tr>
+        <td><strong>1.000 Chamadas no Mês</strong></td>
+        <td>35.000.000 tokens de entrada</td>
+        <td class="price">$5.25000</td>
+        <td class="price" style="color: #16a34a;">$0.10500 (10 centavos!)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="footer-note">
+    <span>Gerado para: dedss22 / André Carvalho | Repositório: github.com/dedss22/harness</span>
+    <span>Documento Executivo — Outubro de 2026</span>
+  </div>
+
+</body>
+</html>

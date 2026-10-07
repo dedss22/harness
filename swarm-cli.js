@@ -41,7 +41,7 @@ const AVAILABLE_MODELS = [
   "kimi-k3"
 ];
 
-function requestModel(model, systemPrompt, userMessage) {
+function requestModel(model, systemPrompt, userMessage, maxTokens = 4096, temperature = 0.4) {
   return new Promise((resolve, reject) => {
     const postData = JSON.stringify({
       model: model,
@@ -49,8 +49,8 @@ function requestModel(model, systemPrompt, userMessage) {
         { role: "system", content: systemPrompt },
         { role: "user", content: userMessage }
       ],
-      temperature: 0.4,
-      max_tokens: 4096
+      temperature: temperature,
+      max_tokens: maxTokens
     });
 
     const options = {
@@ -101,10 +101,10 @@ function requestModel(model, systemPrompt, userMessage) {
 
 const delay = ms => new Promise(r => setTimeout(r, ms));
 
-async function requestModelWithRetry(model, systemPrompt, userMessage, retries = 2) {
+async function requestModelWithRetry(model, systemPrompt, userMessage, retries = 2, maxTokens = 4096, temperature = 0.4) {
   for (let attempt = 1; attempt <= retries + 1; attempt++) {
     try {
-      return await requestModel(model, systemPrompt, userMessage);
+      return await requestModel(model, systemPrompt, userMessage, maxTokens, temperature);
     } catch (err) {
       const isTransient = err.message.includes('Parse error') || err.message.includes('500') || err.message.includes('502') || err.message.includes('503') || err.message.includes('Timeout') || err.message.includes('Unknown Error');
       if (isTransient && attempt <= retries) {
@@ -162,19 +162,19 @@ function askUserRedirectCli(failedModel) {
   return cliRedirectPromise;
 }
 
-async function callWithFallback(primaryModel, fallbackModel, systemPrompt, userMessage) {
+async function callWithFallback(primaryModel, fallbackModel, systemPrompt, userMessage, maxTokens = 4096, temperature = 0.4) {
   if (cliRedirectApproved === true) {
-    return await requestModelWithRetry("longcat-2.5-preview-free", systemPrompt, userMessage);
+    return await requestModelWithRetry("longcat-2.5-preview-free", systemPrompt, userMessage, 2, maxTokens, temperature);
   }
 
   try {
-    return await requestModelWithRetry(primaryModel, systemPrompt, userMessage);
+    return await requestModelWithRetry(primaryModel, systemPrompt, userMessage, 2, maxTokens, temperature);
   } catch (err) {
     const isQuota = err.message.includes('429') || err.message.includes('limit') || err.message.includes('cota') || err.message.includes('usage');
     if (isQuota) {
       const approved = await askUserRedirectCli(primaryModel);
       if (approved) {
-        return await requestModelWithRetry("longcat-2.5-preview-free", systemPrompt, userMessage);
+        return await requestModelWithRetry("longcat-2.5-preview-free", systemPrompt, userMessage, 2, maxTokens, temperature);
       } else {
         throw new Error(`Operação cancelada: limite atingido em ${primaryModel} e redirecionamento recusado.`);
       }
@@ -182,11 +182,11 @@ async function callWithFallback(primaryModel, fallbackModel, systemPrompt, userM
 
     console.log(`    \x1b[33m↳ ${primaryModel} falhou. Tentando ${fallbackModel}...\x1b[0m`);
     try {
-      return await requestModelWithRetry(fallbackModel, systemPrompt, userMessage);
+      return await requestModelWithRetry(fallbackModel, systemPrompt, userMessage, 2, maxTokens, temperature);
     } catch (err2) {
       const approved = await askUserRedirectCli(fallbackModel);
       if (approved) {
-        return await requestModelWithRetry("longcat-2.5-preview-free", systemPrompt, userMessage);
+        return await requestModelWithRetry("longcat-2.5-preview-free", systemPrompt, userMessage, 2, maxTokens, temperature);
       } else {
         throw new Error(`Operação cancelada: limite atingido em ${fallbackModel} e redirecionamento recusado.`);
       }
@@ -225,8 +225,34 @@ Entregue diretrizes táticas completas para cada um sem placeholders. Português
     );
     console.log(`\x1b[32m[OK]\x1b[0m`);
 
-    // 2. Especialistas em paralelo
-    console.log(`  \x1b[36m[2/4] 🚀 Disparando 4 especialistas em paralelo com diretrizes do Maestro...\x1b[0m`);
+    let consolidatedPlan = plan;
+
+    if (missionPrompt.length >= 50) {
+      process.stdout.write(`  \x1b[34m[2/4] ⚡ Co-Piloto (deepseek-v4-flash)\x1b[0m auditando e blindando casos de borda... `);
+      const COPILOT_PROMPT = `Você é o CO-PILOTO & AUDITOR TÉCNICO DE ELITE (@deepseek-copilot).
+Sua missão é realizar a AUDITORIA CRÍTICA E BLINDAGEM TÉCNICA do plano proposto pelo Maestro LongCat.
+Responda em TURNO ÚNICO (máximo 350 palavras) dividido em:
+1. CASOS DE BORDA & RISCOS EVITADOS
+2. UPGRADES ESTRATÉGICOS OBRIGATÓRIOS (Web, Marketing, Instagram, Prompts)
+3. DIRETIVAS BLINDADAS DE EXECUÇÃO
+Escreva em Português (Brasil).`;
+
+      const copilotReview = await callWithFallback(
+        "deepseek-v4-flash",
+        "deepseek-v4.1-flash",
+        COPILOT_PROMPT,
+        `Briefing: ${missionPrompt}\n\nPLANO PROPOSTO PELO MAESTRO:\n${plan}`,
+        800,
+        0.2
+      );
+      console.log(`\x1b[32m[OK]\x1b[0m`);
+      consolidatedPlan = `=== DIRETRIZES DO MAESTRO ===\n${plan}\n\n=== AUDITORIA TÉCNICA & BLINDAGEM (DEEPSEEK CO-PILOT) ===\n${copilotReview}`;
+    } else {
+      console.log(`  \x1b[90m[2/4] ⚡ Fast-Path Ativo: Co-Piloto bypassado para latência instantânea.\x1b[0m`);
+    }
+
+    // 2. Especialistas em paralelo com diretrizes blindadas
+    console.log(`  \x1b[36m[3/4] 🚀 Disparando 4 especialistas em paralelo com diretrizes blindadas...\x1b[0m`);
     console.log(`    -> \x1b[34m${networkConfig.web}\x1b[0m: Programando Landing Page...`);
     console.log(`    -> \x1b[33m${networkConfig.marketing}\x1b[0m: Oferta $100M e Neuromarketing...`);
     console.log(`    -> \x1b[35m${networkConfig.instagram}\x1b[0m: Modelando Instagram 360°...`);
@@ -235,32 +261,32 @@ Entregue diretrizes táticas completas para cada um sem placeholders. Português
     const pWeb = callWithFallback(
       networkConfig.web,
       "longcat-2.5-preview-free",
-      "Você é o Arquiteto Web Supremo (@web-architect). Siga estritamente as diretrizes do Maestro. Gere uma landing page completa em HTML5 com Tailwind CDN, Bento Grid, sem nenhum placeholder. Retorne o código em ```html ... ```.",
-      `Briefing: ${missionPrompt}\n\nDIRETRIZES DO MAESTRO:\n${plan}`
+      "Você é o Arquiteto Web Supremo (@web-architect). Siga estritamente as diretrizes do Maestro e da Auditoria Técnica. Gere uma landing page completa em HTML5 com Tailwind CDN, Bento Grid, sem nenhum placeholder. Retorne o código em ```html ... ```.",
+      `Briefing: ${missionPrompt}\n\nDIRETRIZES BLINDADAS:\n${consolidatedPlan}`
     );
     await delay(600);
 
     const pMarketing = callWithFallback(
       networkConfig.marketing,
       "longcat-2.5-preview-free",
-      "Você é o Estrategista-Chefe de Marketing (@marketing-strategist). Siga estritamente as diretrizes do Maestro. Gere o canvas com ICP, Proposta Única de Valor e Oferta Grand Slam ($100M Offers de Alex Hormozi).",
-      `Briefing: ${missionPrompt}\n\nDIRETRIZES DO MAESTRO:\n${plan}`
+      "Você é o Estrategista-Chefe de Marketing (@marketing-strategist). Siga estritamente as diretrizes do Maestro e da Auditoria Técnica. Gere o canvas com ICP, Proposta Única de Valor e Oferta Grand Slam ($100M Offers de Alex Hormozi).",
+      `Briefing: ${missionPrompt}\n\nDIRETRIZES BLINDADAS:\n${consolidatedPlan}`
     );
     await delay(600);
 
     const pInstagram = callWithFallback(
       networkConfig.instagram,
       "longcat-2.5-preview-free",
-      "Você é o Modelador de Instagram 360° (@instagram-architect). Siga estritamente as diretrizes do Maestro. Entregue Bio hipnótica, os 5 destaques, roteiro de carrossel de 10 lâminas, sequência de stories 24h e script de reels de 45s.",
-      `Briefing: ${missionPrompt}\n\nDIRETRIZES DO MAESTRO:\n${plan}`
+      "Você é o Modelador de Instagram 360° (@instagram-architect). Siga estritamente as diretrizes do Maestro e da Auditoria Técnica. Entregue Bio hipnótica, os 5 destaques, roteiro de carrossel de 10 lâminas, sequência de stories 24h e script de reels de 45s.",
+      `Briefing: ${missionPrompt}\n\nDIRETRIZES BLINDADAS:\n${consolidatedPlan}`
     );
     await delay(600);
 
     const pPrompts = callWithFallback(
       networkConfig.prompt_art,
       "longcat-2.5-preview-free",
-      "Você é o Diretor de Arte e Criador de Prompts (@prompt-artisan). Siga estritamente as diretrizes do Maestro. Gere prompts cinematográficos fotorealistas prontos para Midjourney v6.1 e Flux.1 com iluminação, lentes e parâmetros técnicos.",
-      `Briefing: ${missionPrompt}\n\nDIRETRIZES DO MAESTRO:\n${plan}`
+      "Você é o Diretor de Arte e Criador de Prompts (@prompt-artisan). Siga estritamente as diretrizes do Maestro e da Auditoria Técnica. Gere prompts cinematográficos fotorealistas prontos para Midjourney v6.1 e Flux.1 com iluminação, lentes e parâmetros técnicos.",
+      `Briefing: ${missionPrompt}\n\nDIRETRIZES BLINDADAS:\n${consolidatedPlan}`
     );
 
     const [resWeb, resMarketing, resInstagram, resPrompts] = await Promise.all([

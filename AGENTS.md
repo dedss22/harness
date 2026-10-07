@@ -27,28 +27,28 @@
 
 | Agente | Modelo Alocado | Custo / Limite Mensal | Missão no Enxame |
 | :--- | :--- | :--- | :--- |
-| **`@maestro`** | `longcat-2.5-preview-free` | $0.00 · ILIMITADO | Maestro Orquestrador Supremo. Raciocínio analítico nativo (Thinking Tokens) e 128k context. Decompõe qualquer briefing e delega diretrizes táticas cirúrgicas para cada especialista sem consumir cota paga. |
+| **`@maestro`** | `longcat-2.5-preview-free` | $0.00 · ILIMITADO | Maestro Orquestrador Supremo. Raciocínio analítico nativo (Thinking Tokens) e 128k context. Decompõe qualquer briefing em plano mestre sem consumir cota paga. |
+| **`@deepseek-copilot`** | `deepseek-v4-flash` | $0.15/1M · Limite $120 | Co-Piloto & Auditor Técnico. Valida o plano do Maestro em turno único (One-Shot FSM), detecta casos de borda e blinda as diretrizes antes do disparo. |
 | **`@web-architect`** | `deepseek-v4-flash` | $0.15/1M · Limite $120 | Engenharia Frontend. Gera landing pages completas em HTML5 + Tailwind CSS + Bento Grid sem placeholders. |
 | **`@marketing-strategist`** | `glm-5.3-flash` | $0.15/1M · Limite $180 | Neuromarketing e Ofertas. Desenvolve ofertas Grand Slam ($100M Offers de Alex Hormozi) e funis de conversão. |
 | **`@instagram-architect`** | `minimax-m3` | $0.30/1M · Limite $180 | Engenharia Reversa Social. Modela bio hipnótica, os 5 destaques, carrossel de 10 lâminas e stories 24h. |
 | **`@prompt-artisan`** | `qwen3.8-flash` | $0.15/1M · Limite $90 | Direção de Arte. Fabrica prompts para Midjourney v6.1 e Flux.1 com parâmetros técnicos de lentes e iluminação. |
-| **`@qa-critic`** | `longcat-2.5-preview-free` | $0.00 · ILIMITADO | Auditor Implacável. Valida consistência, ausência de pontas soltas e alinhamento de funil com custo zero. |
 | **`@reserva-gratuito`** | `longcat-2.5-preview-free` | $0.00 · ILIMITADO | Rede de segurança ininterrupta que assume se qualquer cota temporária dos modelos Flash for acionada. |
-
 
 ---
 
-## 3. PROTOCOLO DE FLUXO DE TRABALHO E DELEGAÇÃO DO MAESTRO LONGCAT
+## 3. PROTOCOLO DUAL-CORE: MAESTRO LONGCAT + DEEPSEEK CO-PILOT
 
 ```mermaid
 flowchart TD
-    A[Briefing do Usuário] --> B[@maestro LongCat: Thinking Engine & Decomposição Estratégica]
-    B --> C[@marketing-strategist: ICP, Oferta Irresistível & Âncora de Valor]
-    B --> D1[@web-architect: Construção de Site / Landing Page com Bento Grid]
-    B --> D2[@instagram-architect: Modelagem 360°, Bio, 10 Lâminas & Stories 24h]
-    B --> E[@prompt-artisan: Fabricação de Prompts Midjourney & Flux.1]
-    D1 & D2 & E --> F[@qa-critic: Auditoria Técnica & Consistência]
-    F --> G[@maestro: Entrega Consolidada em Disco C:\KIMI]
+    A[Briefing do Usuário] --> B[@maestro LongCat: Thinking Engine & Plano Mestre $0.00]
+    B --> C[@deepseek-copilot: Auditoria One-Shot, Casos de Borda & Blindagem]
+    C --> D[Plano Blindado Consolidado]
+    D --> E1[@web-architect: Construção de Site / Bento Grid]
+    D --> E2[@marketing-strategist: ICP, Oferta $100M & Neuromarketing]
+    D --> E3[@instagram-architect: Modelagem 360°, Bio & Carrossel]
+    D --> E4[@prompt-artisan: Prompts Fotorealistas Midjourney/Flux]
+    E1 & E2 & E3 & E4 --> F[Gravação Paralela em C:\KIMI]
 ```
 
 ### O Framework de Delegação Cirúrgica do Maestro (@longcat-2.5-preview-free):

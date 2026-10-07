@@ -95,7 +95,8 @@ const AGENT_SYSTEM_PROMPTS = {
   web: `Você é o ARQUITETO WEB & CRIADOR DE SITES SUPREMO (@web-architect). Sua missão é gerar uma LANDING PAGE COMPLETA E LINDA em HTML5 com Tailwind CSS (usando CDN https://cdn.tailwindcss.com e FontAwesome 6). NUNCA gere placeholders. Inclua Header Glassmorphic, Hero Section, Bento Grid, Tabela de Oferta, FAQ e Footer. Retorne APENAS o código HTML dentro de \`\`\`html ... \`\`\`.`,
   marketing: `Você é o ESTRATEGISTA-CHEFE DE MARKETING & NEUROMARKETING (@marketing-strategist). Sua missão é desenvolver a ESTRATÉGIA DE CONVERSÃO E OFERTA IRRESISTÍVEL ($100M Offers de Alex Hormozi): ICP, UVP, Oferta Grand Slam e Funil Topo/Meio/Fundo.`,
   instagram: `Você é o MODELADOR SUPREMO DE INSTAGRAM 360° (@instagram-architect). Entregue: Bio hipnótica em 4 linhas, 5 destaques, roteiro completo de carrossel de 10 lâminas, sequência de stories 24h e script de reels de 45 segundos.`,
-  prompt_art: `Você é o DIRETOR DE ARTE & FABRICANTE DE IMAGENS SINTÉTICAS (@prompt-artisan). Crie prompts cinematográficos fotorealistas prontos para Midjourney v6.1 e Flux.1: retratos editoriais, mockups 3D de interface e capas dos 5 destaques com parâmetros técnicos.`
+  prompt_art: `Você é o DIRETOR DE ARTE & FABRICANTE DE IMAGENS SINTÉTICAS (@prompt-artisan). Crie prompts cinematográficos fotorealistas prontos para Midjourney v6.1 e Flux.1: retratos editoriais, mockups 3D de interface e capas dos 5 destaques com parâmetros técnicos.`,
+  copilot: `Você é o CO-PILOTO & AUDITOR TÉCNICO DE ELITE DO ENXAME (@deepseek-copilot). Sua missão é realizar a AUDITORIA CRÍTICA E BLINDAGEM TÉCNICA do plano proposto pelo Maestro. Responda em TURNO ÚNICO (máximo 350 palavras) dividido em: 1. CASOS DE BORDA & RISCOS EVITADOS; 2. UPGRADES ESTRATÉGICOS OBRIGATÓRIOS (Web, Marketing, Instagram, Prompts); 3. DIRETIVAS BLINDADAS DE EXECUÇÃO. Português (Brasil).`
 };
 
 const server = http.createServer(async (req, res) => {
@@ -172,37 +173,56 @@ const server = http.createServer(async (req, res) => {
           models.orchestrator,
           AGENT_SYSTEM_PROMPTS.orchestrator,
           `O usuário quer a seguinte entrega digital completa:\n"${userPrompt}"\n\nCrie o plano de ataque para Web Architect, Marketing Strategist, Instagram Architect e Prompt Artisan.`,
-          "kimi-k3"
+          "longcat-2.5-preview-free"
         );
 
-        // FASE 2: Disparo Paralelo
+        let consolidatedPlan = plan;
+
+        // FASE 1.5: Co-Piloto DeepSeek (Prevenção de Loops e Latência Otimizada)
+        if (userPrompt.length >= 50) {
+          console.log(` -> Disparando Co-Piloto DeepSeek para auditoria e blindagem...`);
+          try {
+            const copilotReview = await callModel(
+              "deepseek-v4-flash",
+              AGENT_SYSTEM_PROMPTS.copilot,
+              `Briefing: "${userPrompt}"\n\nPLANO PROPOSTO PELO MAESTRO:\n${plan}`,
+              "deepseek-v4.1-flash"
+            );
+            consolidatedPlan = `=== DIRETRIZES DO MAESTRO ===\n${plan}\n\n=== AUDITORIA TÉCNICA & BLINDAGEM (DEEPSEEK CO-PILOT) ===\n${copilotReview}`;
+            console.log(` -> Auditoria DeepSeek concluída com sucesso!`);
+          } catch (eCopilot) {
+            console.log(` -> [AVISO] Co-Piloto falhou (${eCopilot.message}), prosseguindo com plano original.`);
+          }
+        }
+
+        // FASE 2: Disparo Paralelo com Diretrizes Blindadas
         console.log(` -> Disparando em paralelo para os 4 especialistas...`);
         const taskWeb = callModel(
           models.web,
           AGENT_SYSTEM_PROMPTS.web,
-          `Briefing: "${userPrompt}"\nPlano: ${plan}`,
-          "kimi-k3"
+          `Briefing: "${userPrompt}"\nDiretrizes Blindadas:\n${consolidatedPlan}`,
+          "longcat-2.5-preview-free"
         );
 
         const taskMarketing = callModel(
           models.marketing,
           AGENT_SYSTEM_PROMPTS.marketing,
-          `Briefing: "${userPrompt}"\nPlano: ${plan}`,
-          "kimi-k3"
+          `Briefing: "${userPrompt}"\nDiretrizes Blindadas:\n${consolidatedPlan}`,
+          "longcat-2.5-preview-free"
         );
 
         const taskInstagram = callModel(
           models.instagram,
           AGENT_SYSTEM_PROMPTS.instagram,
-          `Briefing: "${userPrompt}"\nPlano: ${plan}`,
-          "kimi-k3"
+          `Briefing: "${userPrompt}"\nDiretrizes Blindadas:\n${consolidatedPlan}`,
+          "longcat-2.5-preview-free"
         );
 
         const taskPromptArt = callModel(
           models.prompt_art,
           AGENT_SYSTEM_PROMPTS.prompt_art,
-          `Briefing: "${userPrompt}"\nPlano: ${plan}`,
-          "kimi-k3"
+          `Briefing: "${userPrompt}"\nDiretrizes Blindadas:\n${consolidatedPlan}`,
+          "longcat-2.5-preview-free"
         );
 
         const [webResult, marketingResult, instagramResult, promptArtResult] = await Promise.all([

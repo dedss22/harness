@@ -1,16 +1,34 @@
 // ==============================================================================
-// SWARM NETWORK CLI ENGINE - NÚCLEO FLASH DE ALTA EFICIÊNCIA (DURA O MÊS TODO)
+// SWARM NETWORK CLI ENGINE - DUAL-CORE ORCHESTRATION (LONGCAT + DEEPSEEK CO-PILOT)
+// ==============================================================================
+// Arquitetura de Elite com Prevenção de Loops Infinitos (One-Shot FSM)
+// e Mitigação Ativa de Latência (Fast-Path Adaptativo + 800 tokens max + Cache Hit)
 // ==============================================================================
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-const userPrompt = process.argv.slice(2).join(' ');
+let rawArgs = process.argv.slice(2);
+let isFastMode = false;
+let isDeepMode = false;
 
-if (!userPrompt) {
-  console.log(`\n\x1b[33mUSO DO ENXAME:\x1b[0m node swarm.js "<sua missao aqui>"`);
+if (rawArgs.includes('--fast')) {
+  isFastMode = true;
+  rawArgs = rawArgs.filter(a => a !== '--fast');
+}
+if (rawArgs.includes('--deep')) {
+  isDeepMode = true;
+  rawArgs = rawArgs.filter(a => a !== '--deep');
+}
+
+const userPrompt = rawArgs.join(' ').trim();
+
+if (rawArgs.includes('--help') || rawArgs.includes('-h') || !userPrompt) {
+  console.log(`\n\x1b[33mUSO DO ENXAME:\x1b[0m node swarm.js [--fast | --deep] "<sua missao aqui>"`);
+  console.log(`  --fast : Modo ultrarrápido (ignora auditoria DeepSeek para latência zero)`);
+  console.log(`  --deep : Força auditoria profunda do DeepSeek Co-Pilot mesmo em comandos curtos`);
   console.log(`Exemplo: node swarm.js "Criar landing page e modelar Instagram para clinica de estetica"\n`);
-  process.exit(1);
+  process.exit(!userPrompt ? 1 : 0);
 }
 
 // Ler API Key de process.env ou do arquivo .env local
@@ -28,7 +46,7 @@ if (!apiKey) {
   process.exit(1);
 }
 
-function requestModel(model, systemPrompt, userMessage) {
+function requestModel(model, systemPrompt, userMessage, maxTokens = 4096, temperature = 0.4) {
   return new Promise((resolve, reject) => {
     const postData = JSON.stringify({
       model: model,
@@ -36,8 +54,8 @@ function requestModel(model, systemPrompt, userMessage) {
         { role: "system", content: systemPrompt },
         { role: "user", content: userMessage }
       ],
-      temperature: 0.4,
-      max_tokens: 4096
+      temperature: temperature,
+      max_tokens: maxTokens
     });
 
     const options = {
@@ -88,10 +106,10 @@ function requestModel(model, systemPrompt, userMessage) {
 
 const delay = ms => new Promise(r => setTimeout(r, ms));
 
-async function requestModelWithRetry(model, systemPrompt, userMessage, retries = 2) {
+async function requestModelWithRetry(model, systemPrompt, userMessage, retries = 2, maxTokens = 4096, temperature = 0.4) {
   for (let attempt = 1; attempt <= retries + 1; attempt++) {
     try {
-      return await requestModel(model, systemPrompt, userMessage);
+      return await requestModel(model, systemPrompt, userMessage, maxTokens, temperature);
     } catch (err) {
       const isTransient = err.message.includes('Parse error') || err.message.includes('500') || err.message.includes('502') || err.message.includes('503') || err.message.includes('Timeout') || err.message.includes('Unknown Error');
       if (isTransient && attempt <= retries) {
@@ -152,19 +170,19 @@ function askUserRedirect(failedModel) {
 }
 
 // Chamada resiliente: primário -> fallback flash -> pergunta antes do fallback gratuito
-async function callModelWithFallback(primaryModel, fallbackModel, systemPrompt, userMessage) {
+async function callModelWithFallback(primaryModel, fallbackModel, systemPrompt, userMessage, maxTokens = 4096, temperature = 0.4) {
   if (redirectApproved === true) {
-    return await requestModelWithRetry("longcat-2.5-preview-free", systemPrompt, userMessage);
+    return await requestModelWithRetry("longcat-2.5-preview-free", systemPrompt, userMessage, 2, maxTokens, temperature);
   }
 
   try {
-    return await requestModelWithRetry(primaryModel, systemPrompt, userMessage);
+    return await requestModelWithRetry(primaryModel, systemPrompt, userMessage, 2, maxTokens, temperature);
   } catch (err) {
     const isQuota = err.message.includes('429') || err.message.includes('limit') || err.message.includes('cota') || err.message.includes('usage');
     if (isQuota) {
       const approved = await askUserRedirect(primaryModel);
       if (approved) {
-        return await requestModelWithRetry("longcat-2.5-preview-free", systemPrompt, userMessage);
+        return await requestModelWithRetry("longcat-2.5-preview-free", systemPrompt, userMessage, 2, maxTokens, temperature);
       } else {
         throw new Error(`Operação cancelada: limite atingido em ${primaryModel} e redirecionamento recusado.`);
       }
@@ -172,11 +190,11 @@ async function callModelWithFallback(primaryModel, fallbackModel, systemPrompt, 
 
     console.log(`  \x1b[33m⚠️ ${primaryModel} falhou (${err.message.substring(0, 50)}...). Acionando ${fallbackModel}...\x1b[0m`);
     try {
-      return await requestModelWithRetry(fallbackModel, systemPrompt, userMessage);
+      return await requestModelWithRetry(fallbackModel, systemPrompt, userMessage, 2, maxTokens, temperature);
     } catch (err2) {
       const approved = await askUserRedirect(fallbackModel);
       if (approved) {
-        return await requestModelWithRetry("longcat-2.5-preview-free", systemPrompt, userMessage);
+        return await requestModelWithRetry("longcat-2.5-preview-free", systemPrompt, userMessage, 2, maxTokens, temperature);
       } else {
         throw new Error(`Operação cancelada: limite atingido em ${fallbackModel} e redirecionamento recusado.`);
       }
@@ -184,6 +202,9 @@ async function callModelWithFallback(primaryModel, fallbackModel, systemPrompt, 
   }
 }
 
+// ------------------------------------------------------------------------------
+// PROMPTS DO SISTEMA: MAESTRO & DEEPSEEK CO-PILOT
+// ------------------------------------------------------------------------------
 const MAESTRO_SYSTEM_PROMPT = `Você é o MAESTRO ORQUESTRADOR SUPREMO DO ENXAME DE IA.
 Sua missão é realizar a DECOMPOSIÇÃO ESTRATÉGICA E DELEGAÇÃO PERFEITA para 4 especialistas de elite:
 1. @web-architect (Arquiteto Frontend e Criador de Landing Pages)
@@ -223,27 +244,76 @@ Em seguida, produza um comando tático estruturado dividido exatamente nas seç�
 
 Seja minucioso, tático, autoritário e escreva em Português (Brasil).`;
 
+const DEEPSEEK_COPILOT_SYSTEM_PROMPT = `Você é o CO-PILOTO & AUDITOR TÉCNICO DE ELITE DO ENXAME (@deepseek-copilot).
+Sua missão é realizar a AUDITORIA CRÍTICA E BLINDAGEM TÉCNICA do plano proposto pelo Maestro LongCat.
+
+DIRETRIZES DE AUDITORIA & VELOCIDADE MÁXIMA (TURNO ÚNICO - ZERO LOOPS):
+- Responda em TURNO ÚNICO, de forma cirúrgica e concisa (máximo 350-400 palavras).
+- Não perca tempo elogiando o que já está bom. Vá direto nas brechas, edge cases e melhorias.
+- Estruture sua resposta estritamente nos 3 blocos abaixo:
+
+### 1. CASOS DE BORDA & RISCOS EVITADOS
+- 2 a 3 potenciais falhas de arquitetura, UX, copy ou concorrência que devem ser neutralizadas.
+
+### 2. UPGRADES ESTRATÉGICOS OBRIGATÓRIOS
+- @web-architect: Refinamentos cruciais de frontend (acessibilidade, performance de carregamento, responsividade, Tailwind).
+- @marketing-strategist: Ajuste cirúrgico na ancoragem de preço e quebra da maior objeção oculta.
+- @instagram-architect: Gancho magnético de retenção nos primeiros 3 segundos.
+- @prompt-artisan: Parâmetros estritos de consistência de estilo, luz e lentes.
+
+### 3. DIRETIVAS BLINDADAS DE EXECUÇÃO
+- Comandos mandatórios finais que os especialistas devem incorporar no seu código e copy.
+
+Escreva em Português (Brasil).`;
+
+// ------------------------------------------------------------------------------
+// EXECUÇÃO DO ENXAME DUAL-CORE
+// ------------------------------------------------------------------------------
 async function runSwarm() {
+  const startTime = Date.now();
   console.log(`\n\x1b[36m==========================================================\x1b[0m`);
-  console.log(`   \x1b[33m⚡ ENXAME MULTI-AGENTE: ORQUESTRAÇÃO DE ELITE\x1b[0m`);
-  console.log(`   \x1b[90mMaestro: longcat-2.5-preview-free ($0.00 / Thinking Engine)\x1b[0m`);
-  console.log(`   \x1b[90mRede: DeepSeek Flash + GLM Flash + MiniMax M3 + Qwen Flash\x1b[0m`);
+  console.log(`   \x1b[33m⚡ ENXAME MULTI-AGENTE: DUAL-CORE ORCHESTRATION\x1b[0m`);
+  console.log(`   \x1b[90mMaestro Central: longcat-2.5-preview-free ($0.00 / Thinking Engine)\x1b[0m`);
+  console.log(`   \x1b[90mCo-Piloto Validador: deepseek-v4-flash ($0.15/1M / One-Shot FSM)\x1b[0m`);
+  console.log(`   \x1b[90mEspecialistas: DeepSeek Flash + GLM Flash + MiniMax M3 + Qwen Flash\x1b[0m`);
   console.log(`\x1b[36m==========================================================\x1b[0m`);
   console.log(`\x1b[90mBriefing:\x1b[0m "${userPrompt}"\n`);
 
   try {
     // 1. FASE 1: Maestro Orquestrador (LongCat com Thinking Tokens nativos)
-    console.log(`\x1b[35m[1/4] 🧠 Maestro (@longcat-2.5-preview-free) dissecando briefing e arquitetando delegação...\x1b[0m`);
+    console.log(`\x1b[35m[1/4] 🧠 Maestro (@longcat-2.5-preview-free) dissecando briefing e arquitetando plano mestre...\x1b[0m`);
     const plan = await callModelWithFallback(
       "longcat-2.5-preview-free",
       "longcat-2.5-preview-free",
       MAESTRO_SYSTEM_PROMPT,
       userPrompt
     );
-    console.log(`  \x1b[32m✓ Plano do Maestro concluído com sucesso analítico!\x1b[0m\n`);
+    console.log(`  \x1b[32m✓ Plano inicial do Maestro gerado com sucesso analítico!\x1b[0m\n`);
 
-    // 2. FASE 2: Disparo Paralelo aos Especialistas com o Plano do Maestro
-    console.log(`\x1b[36m[2/4] Disparando 4 especialistas em paralelo com diretrizes do Maestro...\x1b[0m`);
+    let consolidatedPlan = plan;
+
+    // 2. FASE 1.5: Co-Piloto & Auditoria DeepSeek (Prevenção Estrita de Loops + Otimização de Latência)
+    const shouldRunCopilot = isDeepMode || (!isFastMode && userPrompt.length >= 50);
+
+    if (shouldRunCopilot) {
+      console.log(`\x1b[34m[2/4] ⚡ Co-Piloto (@deepseek-v4-flash) auditando arquitetura e blindando casos de borda...\x1b[0m`);
+      const copilotReview = await callModelWithFallback(
+        "deepseek-v4-flash",
+        "deepseek-v4.1-flash",
+        DEEPSEEK_COPILOT_SYSTEM_PROMPT,
+        `Briefing do Cliente: "${userPrompt}"\n\nPLANO PROPOSTO PELO MAESTRO:\n${plan}`,
+        800,  // Latência ultrabaixa: limite de tokens cirúrgico
+        0.2   // Temperatura baixa para máxima precisão e velocidade
+      );
+      console.log(`  \x1b[32m✓ Auditoria DeepSeek concluída com êxito! Plano blindado.\x1b[0m\n`);
+
+      consolidatedPlan = `=== DIRETRIZES DO MAESTRO (LONGCAT) ===\n${plan}\n\n=== AUDITORIA TÉCNICA & BLINDAGEM (DEEPSEEK CO-PILOT) ===\n${copilotReview}`;
+    } else {
+      console.log(`\x1b[90m[2/4] ⚡ Fast-Path Ativo: Co-Piloto bypassado para latência instantânea.\x1b[0m\n`);
+    }
+
+    // 3. FASE 2: Disparo Paralelo aos Especialistas com o Plano Blindado Consolidado
+    console.log(`\x1b[36m[3/4] 🚀 Disparando 4 especialistas em paralelo com diretrizes blindadas...\x1b[0m`);
     console.log(`  -> @web-architect (\x1b[34mdeepseek-v4-flash\x1b[0m): Programando Landing Page HTML5/Tailwind`);
     console.log(`  -> @marketing-strategist (\x1b[33mglm-5.3-flash\x1b[0m): Arquitetando Oferta $100M e Neuromarketing`);
     console.log(`  -> @instagram-architect (\x1b[35mminimax-m3\x1b[0m): Modelando Bio, Destaques, Carrossel & Reels`);
@@ -252,32 +322,32 @@ async function runSwarm() {
     const pWeb = callModelWithFallback(
       "deepseek-v4-flash",
       "kimi-k2.7-code",
-      "Você é o Arquiteto Web Supremo (@web-architect). Siga estritamente as diretrizes do Maestro. Gere uma landing page completa em HTML5 com Tailwind CDN, Bento Grid, sem nenhum placeholder. Retorne o código em ```html ... ```.",
-      `Briefing do Cliente: ${userPrompt}\n\nDIRETRIZES DO MAESTRO:\n${plan}`
+      "Você é o Arquiteto Web Supremo (@web-architect). Siga estritamente as diretrizes do Maestro e da Auditoria Técnica. Gere uma landing page completa em HTML5 com Tailwind CDN, Bento Grid, sem nenhum placeholder. Retorne o código em ```html ... ```.",
+      `Briefing do Cliente: ${userPrompt}\n\nDIRETRIZES BLINDADAS:\n${consolidatedPlan}`
     );
     await delay(600);
 
     const pMarketing = callModelWithFallback(
       "glm-5.3-flash",
       "minimax-m3",
-      "Você é o Estrategista-Chefe de Marketing (@marketing-strategist). Siga estritamente as diretrizes do Maestro. Gere o canvas de marketing com ICP, Proposta Única de Valor e Oferta Grand Slam ($100M Offers de Alex Hormozi).",
-      `Briefing do Cliente: ${userPrompt}\n\nDIRETRIZES DO MAESTRO:\n${plan}`
+      "Você é o Estrategista-Chefe de Marketing (@marketing-strategist). Siga estritamente as diretrizes do Maestro e da Auditoria Técnica. Gere o canvas de marketing com ICP, Proposta Única de Valor e Oferta Grand Slam ($100M Offers de Alex Hormozi).",
+      `Briefing do Cliente: ${userPrompt}\n\nDIRETRIZES BLINDADAS:\n${consolidatedPlan}`
     );
     await delay(600);
 
     const pInstagram = callModelWithFallback(
       "minimax-m3",
       "glm-5.3-flash",
-      "Você é o Modelador de Instagram 360° (@instagram-architect). Siga estritamente as diretrizes do Maestro. Entregue Bio hipnótica, os 5 destaques, roteiro de carrossel de 10 lâminas, sequência de stories 24h e script de reels de 45s.",
-      `Briefing do Cliente: ${userPrompt}\n\nDIRETRIZES DO MAESTRO:\n${plan}`
+      "Você é o Modelador de Instagram 360° (@instagram-architect). Siga estritamente as diretrizes do Maestro e da Auditoria Técnica. Entregue Bio hipnótica, os 5 destaques, roteiro de carrossel de 10 lâminas, sequência de stories 24h e script de reels de 45s.",
+      `Briefing do Cliente: ${userPrompt}\n\nDIRETRIZES BLINDADAS:\n${consolidatedPlan}`
     );
     await delay(600);
 
     const pPrompts = callModelWithFallback(
       "qwen3.8-flash",
       "minimax-m3",
-      "Você é o Diretor de Arte e Criador de Prompts (@prompt-artisan). Siga estritamente as diretrizes do Maestro. Gere prompts cinematográficos fotorealistas prontos para Midjourney v6.1 e Flux.1 com iluminação, lentes e parâmetros técnicos.",
-      `Briefing do Cliente: ${userPrompt}\n\nDIRETRIZES DO MAESTRO:\n${plan}`
+      "Você é o Diretor de Arte e Criador de Prompts (@prompt-artisan). Siga estritamente as diretrizes do Maestro e da Auditoria Técnica. Gere prompts cinematográficos fotorealistas prontos para Midjourney v6.1 e Flux.1 com iluminação, lentes e parâmetros técnicos.",
+      `Briefing do Cliente: ${userPrompt}\n\nDIRETRIZES BLINDADAS:\n${consolidatedPlan}`
     );
 
     const [resWeb, resMarketing, resInstagram, resPrompts] = await Promise.all([
@@ -287,10 +357,10 @@ async function runSwarm() {
       pPrompts
     ]);
 
-    console.log(`\x1b[32m[3/4] Todos os especialistas responderam com sucesso!\x1b[0m\n`);
+    console.log(`\x1b[32m  ✓ Todos os 4 especialistas responderam com sucesso!\x1b[0m\n`);
 
-    // 3. FASE 3: Salvar Arquivos no Disco
-    console.log(`\x1b[33m[4/4] Gravando artefatos no disco em C:\\KIMI...\x1b[0m`);
+    // 4. FASE 3: Salvar Arquivos no Disco
+    console.log(`\x1b[33m[4/4] 💾 Gravando artefatos no disco em C:\\KIMI...\x1b[0m`);
     let htmlClean = resWeb;
     const match = resWeb.match(/```html([\s\S]*?)```/);
     if (match) htmlClean = match[1].trim();
@@ -300,13 +370,15 @@ async function runSwarm() {
     fs.writeFileSync(path.join(__dirname, 'instagram', 'dossie_instagram.md'), resInstagram, 'utf-8');
     fs.writeFileSync(path.join(__dirname, 'prompts', 'prompts_fotorealistas.md'), resPrompts, 'utf-8');
 
+    const totalDuration = ((Date.now() - startTime) / 1000).toFixed(1);
+
     console.log(`  \x1b[32m✓ C:\\KIMI\\web\\index.html\x1b[0m`);
     console.log(`  \x1b[32m✓ C:\\KIMI\\marketing\\estrategia_marketing.md\x1b[0m`);
     console.log(`  \x1b[32m✓ C:\\KIMI\\instagram\\dossie_instagram.md\x1b[0m`);
     console.log(`  \x1b[32m✓ C:\\KIMI\\prompts\\prompts_fotorealistas.md\x1b[0m`);
 
     console.log(`\n\x1b[32m==========================================================\x1b[0m`);
-    console.log(`   \x1b[32m🔥 MISSÃO DO ENXAME CONCLUÍDA COM 100% DE ÊXITO!\x1b[0m`);
+    console.log(`   \x1b[32m🔥 MISSÃO DO ENXAME CONCLUÍDA EM ${totalDuration}s COM 100% DE ÊXITO!\x1b[0m`);
     console.log(`==========================================================\x1b[0m\n`);
 
   } catch (err) {
